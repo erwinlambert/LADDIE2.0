@@ -5,28 +5,12 @@ on:
 
 jobs:
   run_unit_tests:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
-
-      - name: Restore Homebrew cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            /home/linuxbrew/.linuxbrew/Cellar
-            /home/linuxbrew/.cache/Homebrew
-          key: brew-${{ runner.os }}-${{ hashFiles('**/Brewfile') }}
-          restore-keys: |
-            brew-${{ runner.os }}-
-
-      - name: Reinstall/initialize Homebrew if needed
-        run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/runner/.bashrc
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
       - name: Install packages with Homebrew   # Packages end up in /opt/homebrew/Cellar
         run: |
-          brew install gcc
+          #brew install gcc
           brew install open-mpi
           brew install petsc
           brew unlink hdf5-mpi                 # To fix the following conflict: "hdf5-mpi: because hdf5-mpi is a variant of hdf5, one can only use one or the other"

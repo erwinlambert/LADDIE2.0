@@ -46,6 +46,13 @@ if(EXTRA_Fortran_FLAGS)
     target_compile_options(LADDIE_program PRIVATE ${EXTRA_Fortran_FLAGS})
 endif()
 
+# Detect platform
+if(APPLE)
+    set(IS_MACOS TRUE)
+elseif(UNIX)
+    set(IS_LINUX TRUE)
+endif()
+
 # =============
 # == OpenMPI ==
 # =============
@@ -67,7 +74,11 @@ include_directories(${PETSC_INCLUDE_DIRS})
 link_directories(${PETSC_LIBRARY_DIRS})
 add_definitions(${PETSC_CFLAGS_OTHER})
 
-target_link_libraries(LADDIE_program PRIVATE ${PETSC_LIBRARIES})
+if(IS_LINUX)
+    target_link_libraries(LADDIE_program PRIVATE ${PETSC_LIBRARIES})
+elseif(IS_MACOS)
+    target_link_libraries(LADDIE_program PRIVATE ${PETSC_LIBRARY_DIRS}/libpetsc.dylib)
+endif()
 
 # ============
 # == NetCDF ==
@@ -80,4 +91,8 @@ include_directories(${NETCDF_INCLUDE_DIRS})
 link_directories(${NETCDF_LIBRARY_DIRS})
 add_definitions(${NETCDF_CFLAGS_OTHER})
 
-target_link_libraries(LADDIE_program PRIVATE ${NETCDF_LIBRARIES})
+if(IS_LINUX)
+    target_link_libraries(LADDIE_program PRIVATE ${NETCDF_LIBRARIES})
+elseif(IS_MACOS)
+    target_link_libraries(LADDIE_program PRIVATE ${NETCDF_LIBRARY_DIRS}/libpetsc.dylib)
+endif()

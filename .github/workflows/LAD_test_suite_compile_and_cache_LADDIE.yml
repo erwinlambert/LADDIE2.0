@@ -6,22 +6,12 @@ on:
 
 jobs:
   compile_LADDIE:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
-      - name: Install csh
-        run: sudo apt-get update && sudo apt-get install -y csh
-
-      - name: Install Homebrew                 # Install Homebrew, needed on Ubuntu runners
-        run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          echo >> /home/runner/.bashrc
-          echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/runner/.bashrc
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
       - name: Install packages with Homebrew   # Packages end up in /opt/homebrew/Cellar
         run: |
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-          brew install gcc                    # Not needed on GitHub server, already installed
+          #brew install gcc                    # Not needed on GitHub server, already installed
           brew install open-mpi
           brew install petsc
           brew unlink hdf5-mpi                 # To fix the following conflict: "hdf5-mpi: because hdf5-mpi is a variant of hdf5, one can only use one or the other"
@@ -29,16 +19,6 @@ jobs:
           brew install netcdf-fortran
           brew install cmake
           brew install ninja
-
-      - name: Cache Homebrew
-        uses: actions/cache@v4
-        with:
-          path: |
-            /home/linuxbrew/.linuxbrew/Cellar
-            /home/linuxbrew/.cache/Homebrew
-          key: brew-${{ runner.os }}-${{ hashFiles('**/Brewfile') }}
-          restore-keys: |
-            brew-${{ runner.os }}-
 
       - name: Set up Fortran compiler          # See: https://github.com/marketplace/actions/setup-fortran
         uses: fortran-lang/setup-fortran@v1
@@ -59,9 +39,7 @@ jobs:
           git submodule update --recursive --remote
 
       - name: Compile LADDIE
-        run: |
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-          ./compile_LADDIE.csh clean
+        run: ./compile_LADDIE.csh clean
 
       - name: Cache LADDIE program            # TijnB: caching is quite slow, and not optimal here since
         uses: actions/cache/save@v3            # we assume the model code will be changed whenever this workflow
