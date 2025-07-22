@@ -57,7 +57,9 @@ jobs:
         run: git submodule update --recursive --remote
 
       - name: Compile LADDIE
-        run: ./compile_LADDIE.csh clean
+        run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          ./compile_LADDIE.csh clean
 
       - name: Cache LADDIE program            # TijnB: caching is quite slow, and not optimal here since
         uses: actions/cache/save@v3            # we assume the model code will be changed whenever this workflow
