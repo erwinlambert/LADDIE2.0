@@ -3,9 +3,17 @@ project(LADDIE LANGUAGES Fortran)
 
 set(CMAKE_Fortran_STANDARD 2018)
 
-file(GLOB_RECURSE LADDIE_SOURCES "external/*.f90")
+# Collect LADDIE source files
+file(GLOB_RECURSE LADDIE_SOURCES "src/*.f90")
 
-add_executable(LADDIE_program ${LADDIE_SOURCES})
+# Collect UFEMISM source files (assuming correct path)
+file(GLOB_RECURSE UFEMISM_SOURCES "external/UFEMISM2.0/src/*.f90")
+
+# Combine source files
+set(ALL_SOURCES ${LADDIE_SOURCES} ${UFEMISM_SOURCES})
+
+# Create executable with all sources
+add_executable(LADDIE_program ${ALL_SOURCES})
 
 # Enable preprocessing for all Fortran files
 target_compile_options(LADDIE_program PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:-cpp>)
@@ -49,7 +57,7 @@ include_directories(${PETSC_INCLUDE_DIRS})
 link_directories(${PETSC_LIBRARY_DIRS})
 add_definitions(${PETSC_CFLAGS_OTHER})
 
-target_link_libraries(LADDIE_program PRIVATE ${PETSC_LIBRARY_DIRS}/libpetsc.so)
+target_link_libraries(LADDIE_program PRIVATE ${PETSC_LIBRARIES})
 
 # ============
 # == NetCDF ==
@@ -62,4 +70,4 @@ include_directories(${NETCDF_INCLUDE_DIRS})
 link_directories(${NETCDF_LIBRARY_DIRS})
 add_definitions(${NETCDF_CFLAGS_OTHER})
 
-target_link_libraries(LADDIE_program PRIVATE ${NETCDF_LIBRARY_DIRS}/libnetcdff.so)
+target_link_libraries(LADDIE_program PRIVATE ${NETCDF_LIBRARIES})
