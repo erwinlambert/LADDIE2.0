@@ -6,7 +6,7 @@ build/*
 
 # Ignore scripts in main folder
 /*.sh
-/*.csh
+#/*.csh
 
 # Ignore the module and object files
 *.mod
