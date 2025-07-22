@@ -53,8 +53,8 @@ jobs:
       - name: Checkout LADDIE repository
         uses: actions/checkout@v4
 
-      - name: Ensure compile_LADDIE.csh is executable
-        run: chmod +x ./compile_LADDIE.csh
+      - name: Update UPSY & UFEMISM submodules
+        run: git submodule update --recursive --remote
 
       - name: Compile LADDIE
         run: ./compile_LADDIE.csh clean
