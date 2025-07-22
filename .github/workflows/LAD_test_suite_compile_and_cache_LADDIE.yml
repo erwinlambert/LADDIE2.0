@@ -8,6 +8,9 @@ jobs:
   compile_LADDIE:
     runs-on: ubuntu-latest
     steps:
+      - name: Install csh
+        run: sudo apt-get update && sudo apt-get install -y csh
+
       - name: Install Homebrew                 # Install Homebrew, needed on Ubuntu runners
         run: |
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -42,8 +45,6 @@ jobs:
 
       - name: Ensure compile_LADDIE.csh is executable
         run: chmod +x ./compile_LADDIE.csh
-
-      - run: ls -l
 
       - name: Compile LADDIE
         run: ./compile_LADDIE.csh clean
