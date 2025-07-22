@@ -53,8 +53,10 @@ jobs:
       - name: Checkout LADDIE repository
         uses: actions/checkout@v4
 
-      - name: Update UPSY submodule
-        run: git submodule update --recursive --remote
+      - name: Update UPSY and UFEMISM submodules
+        run: |
+          git submodule update --init --recursive
+          git submodule update --recursive --remote
 
       - name: Compile LADDIE
         run: |
