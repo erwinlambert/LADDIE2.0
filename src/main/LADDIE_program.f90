@@ -29,16 +29,16 @@ PROGRAM LADDIE_program
   use mpi_basic, only: par, initialise_parallelisation
   USE control_resources_and_error_messaging                  , ONLY: warning, crash, happy, init_routine, finalise_routine, colour_string, do_colour_strings, &
                                                                      initialise_control_and_resource_tracker, reset_resource_tracker, &
-                                                                     print_LADDIE_start, print_LADDIE_end
+                                                                     print_UFEMISM_start, print_UFEMISM_end
   USE model_configuration                                    , ONLY: C, initialise_model_configuration, initialise_model_configuration_unit_tests
-  use netcdf_io_main
-  USE region_types                                           , ONLY: type_model_region
-  USE mesh_types                                             , ONLY: type_mesh
-  USE laddie_model_types                                     , ONLY: type_laddie_model
-  USE reference_geometry_types                               , ONLY: type_reference_geometry
-  USE global_forcing_types                                   , ONLY: type_global_forcing
-  USE LADDIE_main_model                                      , ONLY: initialise_model_region, run_model_region
-  use unit_tests                                             , only: run_laddie_unit_tests
+!  use netcdf_io_main
+!  USE region_types                                           , ONLY: type_model_region
+!  USE mesh_types                                             , ONLY: type_mesh
+!  USE laddie_model_types                                     , ONLY: type_laddie_model
+!  USE reference_geometry_types                               , ONLY: type_reference_geometry
+!  USE global_forcing_types                                   , ONLY: type_global_forcing
+!  USE LADDIE_main_model                                      , ONLY: initialise_model_region, run_model_region
+!  use unit_tests                                             , only: run_laddie_unit_tests
 
   IMPLICIT NONE
 
@@ -46,17 +46,17 @@ PROGRAM LADDIE_program
 ! ==========================
 
   ! The model region
-  TYPE(type_model_region)                :: ANT
+!  TYPE(type_model_region)                :: ANT
 
   ! The global forcings
-  TYPE(type_global_forcing)              :: forcing
+!  TYPE(type_global_forcing)              :: forcing
 
-  type(type_laddie_model)                :: laddie
-  type(type_reference_geometry)          :: refgeo
-  type(type_mesh)                        :: mesh
+!  type(type_laddie_model)                :: laddie
+!  type(type_reference_geometry)          :: refgeo
+!  type(type_mesh)                        :: mesh
 
   ! Coupling
-  REAL(dp)                               :: t_coupling, t_end_models
+!  REAL(dp)                               :: t_coupling, t_end_models
 
   ! Computation time tracking
   REAL(dp)                               :: tstart, tstop, tcomp
@@ -89,15 +89,15 @@ PROGRAM LADDIE_program
   tstart = MPI_WTIME()
 
   ! Print the LADDIE start message to the terminal
-  CALL print_LADDIE_start
+  CALL print_UFEMISM_start
 
   ! Initialise the control and resource tracker
-  CALL initialise_control_and_resource_tracker
+!  CALL initialise_control_and_resource_tracker
 
   ! Special cases
 !  if (input_argument == 'unit_tests') then
-    call initialise_model_configuration_unit_tests
-    call run_laddie_unit_tests
+!    call initialise_model_configuration_unit_tests
+!    call run_laddie_unit_tests
 !  else ! An actual model simulation
 !
 !    ! Initialise the main model configuration
@@ -142,7 +142,7 @@ PROGRAM LADDIE_program
   tcomp = tstop - tstart
 
   ! Print the LADDIE end message to the terminal
-  CALL print_LADDIE_end( tcomp)
+  CALL print_UFEMISM_end( tcomp)
 
   ! Finalise PETSc and MPI parallelisation
   call PetscFinalize( perr)

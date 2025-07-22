@@ -15,8 +15,12 @@ file(GLOB_RECURSE UPSY_SOURCES "external/UPSY/src/*.f90")
 # Combine source files
 set(ALL_SOURCES ${LADDIE_SOURCES} ${UFEMISM_SOURCES} ${UPSY_SOURCES})
 
-# Exclude UFEMISM_program
-list(REMOVE_ITEM ALL_SOURCES "external/UFEMISM2.0/src/main/UFEMISM_program.f90")
+# Remove all *_program.f90 except for LADDIE_program.f90
+foreach(src ${ALL_SOURCES})
+    if(src MATCHES ".*/[^/]*_program[.]f90$" AND NOT src MATCHES ".*/LADDIE_program[.]f90$")
+        list(REMOVE_ITEM ALL_SOURCES "${src}")
+    endif()
+endforeach()
 
 # Create executable with all sources
 add_executable(LADDIE_program ${ALL_SOURCES})

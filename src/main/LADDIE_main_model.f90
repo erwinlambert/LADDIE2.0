@@ -20,8 +20,8 @@ module LADDIE_main_model
   use grid_types, only: type_grid
   USE reference_geometry_types                               , ONLY: type_reference_geometry
   USE global_forcing_types                                   , ONLY: type_global_forcing
-  use reference_geometries_main, only: initialise_reference_geometry_raw_from_file, &
-    remap_reference_geometry_to_mesh
+!  use reference_geometries_main, only: initialise_reference_geometry_raw_from_file, &
+!    remap_reference_geometry_to_mesh
   use ice_dynamics_main, only: initialise_ice_dynamics_model, run_ice_dynamics_model, remap_ice_dynamics_model, &
     create_restart_files_ice_model, write_to_restart_files_ice_model, apply_geometry_relaxation
   use basal_hydrology_main, only: run_basal_hydrology_model
@@ -181,13 +181,13 @@ CONTAINS
     if (allocated( refgeo%SL_grid_raw)) deallocate( refgeo%SL_grid_raw)
 
     ! Initialise the reference geometry on their raw input grids
-    call initialise_reference_geometry_raw_from_file( region_name, 'refgeo', refgeo, filename_refgeo, timeframe_refgeo)
+!    call initialise_reference_geometry_raw_from_file( region_name, 'refgeo', refgeo, filename_refgeo, timeframe_refgeo)
 
     ! ===== Geometry on mesh =====
     ! ============================
 
     ! Set up the model mesh
-    call setup_mesh( region_name, mesh, refgeo)
+!    call setup_mesh( region_name, mesh, refgeo)
 
     ! Remap reference geometries from their raw input grids to the model mesh
 
@@ -203,7 +203,7 @@ CONTAINS
     allocate( refgeo%Hs( mesh%vi1:mesh%vi2))
     allocate( refgeo%SL( mesh%vi1:mesh%vi2))
 
-    call remap_reference_geometry_to_mesh( mesh, refgeo)
+!    call remap_reference_geometry_to_mesh( mesh, refgeo)
 
     if (par%primary) write(0,'(A)') ' Got geometry ...'
 
@@ -215,12 +215,12 @@ CONTAINS
     ! ===== Ocean =====
     ! =================
 
-    call initialise_ocean_model( mesh, ice, ocean, region_name, time)
+!    call initialise_ocean_model( mesh, ice, ocean, region_name, time)
 
     ! ===== LADDIE =====
     ! ==================
 
-    call initialise_laddie_model( mesh, laddie, ocean, ice, region_name)
+!    call initialise_laddie_model( mesh, laddie, ocean, ice, region_name)
 
     ! ===== Integrated scalars =====
     ! ==============================
