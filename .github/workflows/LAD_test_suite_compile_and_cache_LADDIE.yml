@@ -45,7 +45,7 @@ jobs:
         id: setup-fortran
         with:
           compiler: gcc
-          version: 13
+          version: 15
 
       - name: Verify compiler setup
         run: gfortran --version
