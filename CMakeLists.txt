@@ -15,6 +15,9 @@ file(GLOB_RECURSE UPSY_SOURCES "external/UPSY/src/*.f90")
 # Combine source files
 set(ALL_SOURCES ${LADDIE_SOURCES} ${UFEMISM_SOURCES} ${UPSY_SOURCES})
 
+# Exclude UFEMISM_program
+list(REMOVE_ITEM ALL_SOURCES "external/UFEMISM2.0/src/main/UFEMISM_program.f90")
+
 # Create executable with all sources
 add_executable(LADDIE_program ${ALL_SOURCES})
 
