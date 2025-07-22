@@ -43,6 +43,8 @@ jobs:
       - name: Ensure compile_LADDIE.csh is executable
         run: chmod +x ./compile_LADDIE.csh
 
+      - run: ls -l
+
       - name: Compile LADDIE
         run: ./compile_LADDIE.csh clean
 
