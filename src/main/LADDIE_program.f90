@@ -95,44 +95,44 @@ PROGRAM LADDIE_program
   CALL initialise_control_and_resource_tracker
 
   ! Special cases
-  if (input_argument == 'unit_tests') then
+!  if (input_argument == 'unit_tests') then
     call initialise_model_configuration_unit_tests
     call run_laddie_unit_tests
-  else ! An actual model simulation
-
-    ! Initialise the main model configuration
-    CALL initialise_model_configuration
-
-    ! Create the resource tracking output file
-    CALL create_resource_tracking_file( C%output_dir)
-
-    ! == Initialise the model regions
-    ! ===============================
-
-    call initialise_model_region( ANT, 'ANT', laddie, refgeo, mesh, forcing, C%start_time_of_run)
-
-    ! == The coupling time loop
-    ! =========================
-
-    t_coupling = C%start_time_of_run
-
-    DO WHILE (t_coupling < C%end_time_of_run)
-
-      ! Run all model regions forward in time for one coupling interval
-      t_end_models = MIN( C%end_time_of_run, t_coupling + C%dt_coupling)
-
-      CALL run_model_region( ANT, t_end_models, forcing)
-
-      ! Advance coupling time
-      t_coupling = t_end_models
-
-      ! Write to resource tracking file
-      CALL write_to_resource_tracking_file( t_coupling)
-      CALL reset_resource_tracker
-
-    END DO ! DO WHILE (t_coupling < C%end_time_of_run)
-
-  END IF ! do_unit_test/do_benchmark/run
+!  else ! An actual model simulation
+!
+!    ! Initialise the main model configuration
+!    CALL initialise_model_configuration
+!
+!    ! Create the resource tracking output file
+!    CALL create_resource_tracking_file( C%output_dir)
+!
+!    ! == Initialise the model regions
+!    ! ===============================
+!
+!    call initialise_model_region( ANT, 'ANT', laddie, refgeo, mesh, forcing, C%start_time_of_run)
+!
+!    ! == The coupling time loop
+!    ! =========================
+!
+!    t_coupling = C%start_time_of_run
+!
+!    DO WHILE (t_coupling < C%end_time_of_run)
+!
+!      ! Run all model regions forward in time for one coupling interval
+!      t_end_models = MIN( C%end_time_of_run, t_coupling + C%dt_coupling)
+!
+!      CALL run_model_region( ANT, t_end_models, forcing)
+!
+!      ! Advance coupling time
+!      t_coupling = t_end_models
+!
+!      ! Write to resource tracking file
+!      CALL write_to_resource_tracking_file( t_coupling)
+!      CALL reset_resource_tracker
+!
+!    END DO ! DO WHILE (t_coupling < C%end_time_of_run)
+!
+!  END IF ! do_unit_test/do_benchmark/run
 
 ! ===== FINISH =====
 ! ==================
