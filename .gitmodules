@@ -1,6 +1,6 @@
-[submodule "external/UFEMISM2.0"]
-	path = external/UFEMISM2.0
-	url = https://github.com/IMAU-paleo/UFEMISM2.0.git
 [submodule "external/UPSY"]
 	path = external/UPSY
 	url = https://github.com/IMAU-paleo/UPSY.git
+[submodule "external/UFEMISM2.0"]
+	path = external/UFEMISM2.0
+	url = https://github.com/IMAU-paleo/UFEMISM2.0.git

@@ -4,8 +4,8 @@ name: LADDIE Test Suite
 run-name: ${{ github.actor }} - LADDIE Test Suite
 on:
   pull_request:
-#    branches:
-#      - main
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -16,5 +16,5 @@ jobs:
 
   # Run the unit tests and analyse the results
   run_unit_tests:
-    needs: [compile_and_cache_LADDIE]
+    needs: compile_and_cache_LADDIE
     uses: ./.github/workflows/LAD_test_suite_run_unit_tests.yml
