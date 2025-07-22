@@ -18,11 +18,9 @@ jobs:
           restore-keys: |
             brew-${{ runner.os }}-
 
-      - name: Reinstall/initialize Homebrew if needed
+      - name: Set up Homebrew environment
         run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $GITHUB_ENV
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          /home/linuxbrew/.linuxbrew/bin/brew shellenv >> /home/runner/.bashrc
 
       - name: Install packages with Homebrew   # Packages end up in /opt/homebrew/Cellar
         run: |
