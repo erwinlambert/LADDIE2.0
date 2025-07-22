@@ -3,7 +3,7 @@ project(LADDIE LANGUAGES Fortran)
 
 set(CMAKE_Fortran_STANDARD 2018)
 
-file(GLOB_RECURSE LADDIE_SOURCES "src/*.f90")
+file(GLOB_RECURSE LADDIE_SOURCES "external/*.f90")
 
 add_executable(LADDIE_program ${LADDIE_SOURCES})
 
