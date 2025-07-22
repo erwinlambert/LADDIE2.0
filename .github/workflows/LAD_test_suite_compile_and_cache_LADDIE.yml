@@ -8,9 +8,15 @@ jobs:
   compile_LADDIE:
     runs-on: ubuntu-latest
     steps:
+      - name: Install Homebrew                 # Install Homebrew, needed on Ubuntu runners
+        run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $GITHUB_ENV
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
       - name: Install packages with Homebrew   # Packages end up in /opt/homebrew/Cellar
         run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           #brew install gcc                    # Not needed on GitHub server, already installed
           brew install open-mpi
           brew install petsc
