@@ -40,8 +40,10 @@ jobs:
       - name: Checkout LADDIE repository
         uses: actions/checkout@v4
 
-      - name: Compile LADDIE
+      - name: Ensure compile_LADDIE.csh is executable
         run: chmod +x ./compile_LADDIE.csh
+
+      - name: Compile LADDIE
         run: ./compile_LADDIE.csh clean
 
       - name: Cache LADDIE program            # TijnB: caching is quite slow, and not optimal here since
