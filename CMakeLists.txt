@@ -9,8 +9,11 @@ file(GLOB_RECURSE LADDIE_SOURCES "src/*.f90")
 # Collect UPSY source files (assuming correct path)
 file(GLOB_RECURSE UPSY_SOURCES "external/UPSY/src/*.f90")
 
+# Collect UFEMISM source files (assuming correct path)
+file(GLOB_RECURSE UFEMISM_SOURCES "external/UFEMISM2.0/src/*.f90")
+
 # Combine source files
-set(ALL_SOURCES ${LADDIE_SOURCES} ${UPSY_SOURCES})
+set(ALL_SOURCES ${LADDIE_SOURCES} ${UPSY_SOURCES} ${UFEMISM_SOURCES})
 
 # Remove all *_program.f90 except for LADDIE_program.f90
 foreach(src ${ALL_SOURCES})
