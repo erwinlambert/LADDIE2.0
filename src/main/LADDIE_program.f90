@@ -1,4 +1,4 @@
-PROGRAM LADDIE_program
+program LADDIE_program
   !
   ! ===============================================================================
   ! = The main program of the one Layer Antarctic model for Dynamical Downscaling =
@@ -24,13 +24,13 @@ PROGRAM LADDIE_program
 ! ===== Preamble =====
 ! ====================
 
-  USE petscksp
-  USE precisions                                             , ONLY: dp
+  use petscksp
+  use precisions                                             , only: dp
   use mpi_basic, only: par, initialise_parallelisation
-  USE control_resources_and_error_messaging                  , ONLY: warning, crash, happy, init_routine, finalise_routine, colour_string, do_colour_strings, &
+  use control_resources_and_error_messaging                  , only: warning, crash, happy, init_routine, finalise_routine, colour_string, do_colour_strings, &
                                                                      initialise_control_and_resource_tracker, reset_resource_tracker, &
-                                                                     print_UFEMISM_start, print_UFEMISM_end
-  USE model_configuration                                    , ONLY: C, initialise_model_configuration, initialise_model_configuration_unit_tests
+                                                                     print_LADDIE_start, print_LADDIE_end
+  use model_configuration                                    , only: C, initialise_model_configuration, initialise_model_configuration_unit_tests
 !  use netcdf_io_main
 !  USE region_types                                           , ONLY: type_model_region
 !  USE mesh_types                                             , ONLY: type_mesh
@@ -38,9 +38,9 @@ PROGRAM LADDIE_program
 !  USE reference_geometry_types                               , ONLY: type_reference_geometry
 !  USE global_forcing_types                                   , ONLY: type_global_forcing
 !  USE LADDIE_main_model                                      , ONLY: initialise_model_region, run_model_region
-!  use unit_tests                                             , only: run_laddie_unit_tests
+  use unit_tests                                             , only: run_laddie_unit_tests
 
-  IMPLICIT NONE
+  implicit none
 
 ! ===== Main variables =====
 ! ==========================
@@ -59,7 +59,7 @@ PROGRAM LADDIE_program
 !  REAL(dp)                               :: t_coupling, t_end_models
 
   ! Computation time tracking
-  REAL(dp)                               :: tstart, tstop, tcomp
+  real(dp)                               :: tstart, tstop, tcomp
 
   ! Input argument
   character(len=1024)                    :: input_argument
@@ -79,7 +79,7 @@ PROGRAM LADDIE_program
 
   ! Initialise MPI parallelisation and PETSc
   call initialise_parallelisation( input_argument)
-  CALL PetscInitialize( PETSC_NULL_CHARACTER, perr)
+  call PetscInitialize( PETSC_NULL_CHARACTER, perr)
 
   ! Only the primary process "sees" the input argument; all the others are
   ! initialised by MPI without it. Broadcast it so they know what to do.
@@ -89,15 +89,15 @@ PROGRAM LADDIE_program
   tstart = MPI_WTIME()
 
   ! Print the LADDIE start message to the terminal
-  CALL print_UFEMISM_start
+  call print_LADDIE_start
 
   ! Initialise the control and resource tracker
 !  CALL initialise_control_and_resource_tracker
 
   ! Special cases
-!  if (input_argument == 'unit_tests') then
-!    call initialise_model_configuration_unit_tests
-!    call run_laddie_unit_tests
+  if (input_argument == 'unit_tests') then
+    call initialise_model_configuration_unit_tests
+    call run_laddie_unit_tests
 !  else ! An actual model simulation
 !
 !    ! Initialise the main model configuration
@@ -132,7 +132,7 @@ PROGRAM LADDIE_program
 !
 !    END DO ! DO WHILE (t_coupling < C%end_time_of_run)
 !
-!  END IF ! do_unit_test/do_benchmark/run
+  end if ! do_unit_test/do_benchmark/run
 
 ! ===== FINISH =====
 ! ==================
@@ -142,11 +142,11 @@ PROGRAM LADDIE_program
   tcomp = tstop - tstart
 
   ! Print the LADDIE end message to the terminal
-  CALL print_UFEMISM_end( tcomp)
+  call print_LADDIE_end( tcomp)
 
   ! Finalise PETSc and MPI parallelisation
   call PetscFinalize( perr)
   call MPI_FINALIZE( ierr)
 
 
-END PROGRAM LADDIE_program
+end program LADDIE_program
