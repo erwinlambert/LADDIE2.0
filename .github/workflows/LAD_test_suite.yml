@@ -4,8 +4,8 @@ name: LADDIE Test Suite
 run-name: ${{ github.actor }} - LADDIE Test Suite
 on:
   pull_request:
-    branches:
-      - main
+#    branches:
+#      - main
   workflow_dispatch:
 
 jobs:
