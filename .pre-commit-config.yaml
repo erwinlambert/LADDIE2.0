@@ -1,0 +1,7 @@
+repos:
+  - repo: local
+    hooks:
+      - id: update-submodules
+        name: Update Git Submodules and stage changes
+        entry: sh -c 'git submodule update --remote && git add .'
+        language: system
