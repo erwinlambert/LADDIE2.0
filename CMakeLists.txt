@@ -12,17 +12,19 @@ file(GLOB_RECURSE UPSY_SOURCES "external/UPSY/src/*.f90")
 # Collect UFEMISM source files (assuming correct path)
 file(GLOB_RECURSE UFEMISM_SOURCES "external/UFEMISM/src/*.f90")
 
+# Remove all *_configuration.f90 except for LADDIE_configuration.f90
+foreach(src ${UFEMISM_SOURCES})
+    if(src MATCHES ".*/[^/]*_configuration[.]f90$")
+        list(REMOVE_ITEM UFEMISM_SOURCES "${src}")
+    endif()
+endforeach()
+
 # Combine source files
 set(ALL_SOURCES ${LADDIE_SOURCES} ${UPSY_SOURCES} ${UFEMISM_SOURCES})
 
-# Remove all files we don't want
+# Remove all *_program.f90 except for LADDIE_program.f90
 foreach(src ${ALL_SOURCES})
-    # Remove all *_program.f90 except for LADDIE_program.f90
     if(src MATCHES ".*/[^/]*_program[.]f90$" AND NOT src MATCHES ".*/LADDIE_program[.]f90$")
-        list(REMOVE_ITEM ALL_SOURCES "${src}")
-    endif()
-    # Remove all *_configuration.f90 except for LADDIE_configuration.f90
-    if(src MATCHES ".*/[^/]*_configuration[.]f90$" AND NOT src MATCHES ".*/LADDIE_configuration[.]f90$")
         list(REMOVE_ITEM ALL_SOURCES "${src}")
     endif()
 endforeach()
