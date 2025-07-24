@@ -38,7 +38,7 @@ program LADDIE_program
 !  USE reference_geometry_types                               , ONLY: type_reference_geometry
 !  USE global_forcing_types                                   , ONLY: type_global_forcing
 !  USE LADDIE_main_model                                      , ONLY: initialise_model_region, run_model_region
-  use unit_tests                                             , only: run_laddie_unit_tests
+  use unit_tests_main                                         , only: run_unit_tests
 
   implicit none
 
@@ -97,7 +97,7 @@ program LADDIE_program
   ! Special cases
   if (input_argument == 'unit_tests') then
     call initialise_model_configuration_unit_tests
-    call run_laddie_unit_tests
+    call run_unit_tests
 !  else ! An actual model simulation
 !
 !    ! Initialise the main model configuration

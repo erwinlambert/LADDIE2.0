@@ -35,8 +35,7 @@ jobs:
 
       - name: Update UPSY and UFEMISM submodules
         run: |
-          git submodule update --init --recursive
-          git submodule update --recursive --remote
+          git submodule update --init --remote
 
       - name: Compile LADDIE
         run: ./compile_LADDIE.csh clean
