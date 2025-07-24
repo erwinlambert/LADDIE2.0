@@ -1,7 +1,0 @@
-repos:
-  - repo: local
-    hooks:
-      - id: update-submodules
-        name: Update Git Submodules
-        entry: git submodule update --remote
-        language: system
