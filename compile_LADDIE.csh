@@ -56,6 +56,7 @@ cmake -G Ninja -DPETSC_DIR=`brew --prefix petsc` \
   -DDO_ASSERTIONS=OFF \
   -DDO_RESOURCE_TRACKING=OFF \
   -DEXTRA_Fortran_FLAGS="\
+    -fdiagnostics-color=always;\
     -O3;\
     -Wall;\
     -ffree-line-length-none;\
