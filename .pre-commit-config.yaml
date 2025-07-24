@@ -3,5 +3,5 @@ repos:
     hooks:
       - id: update-submodules
         name: Update Git Submodules and stage changes
-        entry: git submodule update --remote && git add .
+        entry: sh -c 'git submodule update --remote && git add .'
         language: system
