@@ -1,3 +1,7 @@
 [submodule "external/UPSY"]
 	path = external/UPSY
 	url = https://github.com/IMAU-paleo/UPSY.git
+[submodule "external/UFEMISM"]
+	path = external/UFEMISM
+	url = https://github.com/IMAU-paleo/UFEMISM2.0.git
+        branch = move-laddie
