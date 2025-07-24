@@ -4,3 +4,4 @@
 [submodule "external/UFEMISM2.0"]
 	path = external/UFEMISM2.0
 	url = https://github.com/IMAU-paleo/UFEMISM2.0.git
+        branch = move-laddie
