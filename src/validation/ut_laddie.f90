@@ -25,6 +25,7 @@ module ut_laddie
       extrapolate_ocean_forcing_vertical, extrapolate_ocean_forcing_horizontal_everywhere
   use mesh_translation_tables, only: calc_field_to_vector_form_translation_tables
   use laddie_model_types, only: type_laddie_model
+  use laddie_forcing_types, only: type_laddie_forcing
   use laddie_dummy_domain, only: create_dummy_domain_16
   use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_signaling_nan
 
@@ -48,6 +49,7 @@ subroutine unit_tests_laddie_main( test_name_parent)
   character(len=1024)            :: test_name
   type(type_mesh)                :: mesh
   type(type_laddie_model)        :: laddie
+  type(type_laddie_forcing)      :: forcing
   type(type_ice_model)           :: ice
   type(type_ocean_model)         :: ocean
   logical                        :: test_result
@@ -60,7 +62,7 @@ subroutine unit_tests_laddie_main( test_name_parent)
   test_name = trim( test_name_parent) // '/' // trim( test_name_local)
 
   ! Create dummy domain
-  call create_dummy_domain_16( mesh, ice, ocean, laddie)
+  call create_dummy_domain_16( mesh, ice, ocean, laddie, forcing)
 
   test_result = .true.
 
