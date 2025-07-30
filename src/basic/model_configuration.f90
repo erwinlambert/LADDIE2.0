@@ -965,8 +965,7 @@ MODULE model_configuration
     CHARACTER(LEN=256)  :: choice_laddie_SGD_config                     = 'none'                           ! Choose option for subglacial discharge. Options: 'none', 'idealised'
     CHARACTER(LEN=256)  :: choice_laddie_SGD_idealised_config           = 'MISMIPplus_PC'                  ! Choose option for idealised SGD. Options: 'MISMIPplus_PC', 'MISMIPplus_PW', 'MISMIPplus_PE'
     REAL(dp)            :: laddie_SGD_flux_config                       = 72._dp                           ! [m^3 s^-1] Total subglacial discharge flux
-    ! CHARACTER(LEN=256)  :: filename_subglacial_discharge_mask_config    = ''                               ! area file containing the subglacial discharge mask on the original mesh
-
+    CHARACTER(LEN=256)  :: filename_laddie_mask_SGD_config              = ''                               ! Gridded file containing the subglacial discharge mask
 
   ! == Lateral mass balance
   ! =======================
