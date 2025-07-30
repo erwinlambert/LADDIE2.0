@@ -65,8 +65,6 @@ CONTAINS
     ! Add routine to path
     call init_routine( routine_name)
 
-    call update_laddie_forcing( mesh, ice, ocean, forcing)
-
     ! Only in first time step
     SELECT CASE (C%choice_laddie_SGD)
       CASE DEFAULT
@@ -264,9 +262,6 @@ CONTAINS
 
     ! Allocate variables
     CALL allocate_laddie_model( mesh, laddie)
-    CALL allocate_laddie_forcing( mesh, forcing)
-
-    call update_laddie_forcing( mesh, ice, ocean, forcing)
 
     ! == Update masks ==
     call update_laddie_masks( mesh, laddie, forcing)
@@ -588,30 +583,19 @@ CONTAINS
 
   END SUBROUTINE extrapolate_laddie_variables
 
-  SUBROUTINE remap_laddie_model( mesh_old, mesh_new, ice, ocean, laddie, forcing, time, region_name)
+  SUBROUTINE remap_laddie_forcing( mesh_old, mesh_new, forcing)
     ! Reallocate and remap laddie variables
 
     ! In- and output variables
     TYPE(type_mesh),                        INTENT(IN)    :: mesh_old
     TYPE(type_mesh),                        INTENT(IN)    :: mesh_new
-    TYPE(type_ice_model),                   INTENT(IN)    :: ice
-    TYPE(type_ocean_model),                 INTENT(IN)    :: ocean
-    TYPE(type_laddie_model),                INTENT(INOUT) :: laddie
     TYPE(type_laddie_forcing),              INTENT(INOUT) :: forcing
-    REAL(dp),                               INTENT(IN)    :: time
-    character(len=3),                       intent(in   ) :: region_name
 
     ! Local variables:
-    CHARACTER(LEN=256), PARAMETER                         :: routine_name = 'remap_laddie_model'
+    CHARACTER(LEN=256), PARAMETER                         :: routine_name = 'remap_laddie_forcing'
 
     ! Add routine to path
     CALL init_routine( routine_name)
-
-    ! == Regular variables ==
-
-    ! Thickness
-    call reallocate_dist_shared( laddie%dH_dt,          laddie%wdH_dt,          mesh_new%pai_V%n_nih)
-    laddie%dH_dt         ( mesh_new%pai_V%i1_nih  :mesh_new%pai_V%i2_nih  ) => laddie%dH_dt
 
     ! Forcing
     call reallocate_dist_shared( forcing%Hi                , forcing%wHi                , mesh_new%pai_V%n_nih)
@@ -640,6 +624,36 @@ CONTAINS
     forcing%Ti                ( mesh_new%pai_V%i1_nih  :mesh_new%pai_V%i2_nih, 1:mesh_new%nz) => forcing%Ti
     forcing%T_ocean           ( mesh_new%pai_V%i1_nih  :mesh_new%pai_V%i2_nih, 1:C%nz_ocean ) => forcing%T_ocean
     forcing%S_ocean           ( mesh_new%pai_V%i1_nih  :mesh_new%pai_V%i2_nih, 1:C%nz_ocean ) => forcing%S_ocean
+
+    ! Finalise routine path
+    CALL finalise_routine( routine_name)
+
+  END SUBROUTINE remap_laddie_model
+
+  SUBROUTINE remap_laddie_model( mesh_old, mesh_new, ice, ocean, laddie, forcing, time, region_name)
+    ! Reallocate and remap laddie variables
+
+    ! In- and output variables
+    TYPE(type_mesh),                        INTENT(IN)    :: mesh_old
+    TYPE(type_mesh),                        INTENT(IN)    :: mesh_new
+    TYPE(type_ice_model),                   INTENT(IN)    :: ice
+    TYPE(type_ocean_model),                 INTENT(IN)    :: ocean
+    TYPE(type_laddie_model),                INTENT(INOUT) :: laddie
+    TYPE(type_laddie_forcing),              INTENT(INOUT) :: forcing
+    REAL(dp),                               INTENT(IN)    :: time
+    character(len=3),                       intent(in   ) :: region_name
+
+    ! Local variables:
+    CHARACTER(LEN=256), PARAMETER                         :: routine_name = 'remap_laddie_model'
+
+    ! Add routine to path
+    CALL init_routine( routine_name)
+
+    ! == Regular variables ==
+
+    ! Thickness
+    call reallocate_dist_shared( laddie%dH_dt,          laddie%wdH_dt,          mesh_new%pai_V%n_nih)
+    laddie%dH_dt         ( mesh_new%pai_V%i1_nih  :mesh_new%pai_V%i2_nih  ) => laddie%dH_dt
 
     ! Temperatures
     call reallocate_dist_shared( laddie%T_amb,          laddie%wT_amb,          mesh_new%pai_V%n_nih)
@@ -767,8 +781,6 @@ CONTAINS
     call reallocate_dist_shared( laddie%domain_b      , laddie%wdomain_b      , mesh_new%pai_Tri%n_nih)
     laddie%domain_a      ( mesh_new%pai_V%i1_nih  :mesh_new%pai_V%i2_nih  ) => laddie%domain_a
     laddie%domain_b      ( mesh_new%pai_Tri%i1_nih:mesh_new%pai_Tri%i2_nih) => laddie%domain_b
-
-    call update_laddie_forcing( mesh_new, ice, ocean, forcing)
 
     ! == Re-initialise masks ==
     CALL update_laddie_masks( mesh_new, laddie, forcing)
@@ -898,55 +910,6 @@ CONTAINS
     CALL finalise_routine( routine_name)
 
   END SUBROUTINE remap_laddie_timestep
-
-  subroutine update_laddie_forcing( mesh, ice, ocean, forcing)
-
-    ! In/output variables
-    type(type_mesh),           intent(in   ) :: mesh
-    type(type_ice_model),      intent(in   ) :: ice
-    type(type_ocean_model),    intent(in   ) :: ocean
-    type(type_laddie_forcing), intent(inout) :: forcing
-
-    ! Local variables:
-    character(len=1024), parameter :: routine_name = 'update_laddie_forcing'
-
-    ! Add routine to path
-    call init_routine( routine_name)
-
-    forcing%Hi                ( mesh%vi1:mesh%vi2  ) = ice%Hi                ( mesh%vi1:mesh%vi2  )
-    forcing%Hib               ( mesh%vi1:mesh%vi2  ) = ice%Hib               ( mesh%vi1:mesh%vi2  )
-    forcing%dHib_dx_b         ( mesh%ti1:mesh%ti2  ) = ice%dHib_dx_b         ( mesh%ti1:mesh%ti2  )
-    forcing%dHib_dy_b         ( mesh%ti1:mesh%ti2  ) = ice%dHib_dy_b         ( mesh%ti1:mesh%ti2  )
-    forcing%mask_icefree_land ( mesh%vi1:mesh%vi2  ) = ice%mask_icefree_land ( mesh%vi1:mesh%vi2  )
-    forcing%mask_icefree_ocean( mesh%vi1:mesh%vi2  ) = ice%mask_icefree_ocean( mesh%vi1:mesh%vi2  )
-    forcing%mask_grounded_ice ( mesh%vi1:mesh%vi2  ) = ice%mask_grounded_ice ( mesh%vi1:mesh%vi2  )
-    forcing%mask_floating_ice ( mesh%vi1:mesh%vi2  ) = ice%mask_floating_ice ( mesh%vi1:mesh%vi2  )
-
-    forcing%mask_gl_fl        ( mesh%vi1:mesh%vi2  ) = ice%mask_gl_fl        ( mesh%vi1:mesh%vi2  )
-    forcing%mask_SGD          ( mesh%vi1:mesh%vi2  ) = ice%mask_SGD          ( mesh%vi1:mesh%vi2  )
-    
-    forcing%Ti                ( mesh%vi1:mesh%vi2,:) = ice%Ti                ( mesh%vi1:mesh%vi2,:) - 273.15 ! [degC]
-    forcing%T_ocean           ( mesh%vi1:mesh%vi2,:) = ocean%T               ( mesh%vi1:mesh%vi2,:)
-    forcing%S_ocean           ( mesh%vi1:mesh%vi2,:) = ocean%S               ( mesh%vi1:mesh%vi2,:)
-
-    call checksum( forcing%Hi                , 'forcing%Hi'                , mesh%pai_V)
-    call checksum( forcing%Hib               , 'forcing%Hib'               , mesh%pai_V)
-    call checksum( forcing%dHib_dx_b         , 'forcing%dHib_dx_b'         , mesh%pai_Tri)
-    call checksum( forcing%dHib_dy_b         , 'forcing%dHib_dy_b'         , mesh%pai_Tri)
-    call checksum( forcing%mask_icefree_land , 'forcing%mask_icefree_land' , mesh%pai_V)
-    call checksum( forcing%mask_icefree_ocean, 'forcing%mask_icefree_ocean', mesh%pai_V)
-    call checksum( forcing%mask_grounded_ice , 'forcing%mask_grounded_ice' , mesh%pai_V)
-    call checksum( forcing%mask_floating_ice , 'forcing%mask_floating_ice' , mesh%pai_V)
-    call checksum( forcing%mask_gl_fl        , 'forcing%mask_gl_fl'        , mesh%pai_V)
-    call checksum( forcing%mask_SGD          , 'forcing%mask_SGD'          , mesh%pai_V)
-    call checksum( forcing%Ti                , 'forcing%Ti'                , mesh%pai_V)
-    call checksum( forcing%T_ocean           , 'forcing%T_ocean'           , mesh%pai_V)
-    call checksum( forcing%S_ocean           , 'forcing%S_ocean'           , mesh%pai_V)
-
-    ! Finalise routine path
-    call finalise_routine( routine_name)
-
-  end subroutine update_laddie_forcing
 
   subroutine repartition_laddie( mesh_old, mesh_new, laddie, forcing)
 
