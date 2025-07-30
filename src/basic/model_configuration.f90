@@ -2090,6 +2090,7 @@ MODULE model_configuration
     CHARACTER(LEN=256)  :: choice_laddie_SGD
     CHARACTER(LEN=256)  :: choice_laddie_SGD_idealised
     REAL(dp)            :: laddie_SGD_flux
+    CHARACTER(LEN=256)  :: filename_laddie_mask_SGD
 
   ! == Lateral mass balance
   ! =======================
@@ -3077,6 +3078,7 @@ CONTAINS
       choice_laddie_SGD_config                                    , &
       choice_laddie_SGD_idealised_config                          , &
       laddie_SGD_flux_config                                      , &
+      filename_laddie_mask_SGD_config                             , &
       choice_laddie_tides_config                                  , &
       uniform_laddie_tidal_velocity_config                        , &
       dt_LMB_config                                               , &
@@ -4188,6 +4190,7 @@ CONTAINS
     C%choice_laddie_SGD                                      = choice_laddie_SGD_config
     C%choice_laddie_SGD_idealised                            = choice_laddie_SGD_idealised_config
     C%laddie_SGD_flux                                        = laddie_SGD_flux_config
+    C%filename_laddie_mask_SGD                               = filename_laddie_mask_SGD_config
 
   ! == Lateral mass balance
   ! =======================
